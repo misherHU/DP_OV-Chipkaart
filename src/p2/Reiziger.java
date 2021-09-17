@@ -1,8 +1,10 @@
 package p2;
 
+import P4.OvChipKaart;
 import p3.Adres;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Reiziger {
     private int reiziger_id;
@@ -11,6 +13,7 @@ public class Reiziger {
     private String achternaam;
     private Date geboorteDatum;
     private Adres adres;
+    private List<OvChipKaart> ovChipKaartList;
 
     public void setAdres(Adres adres) {
         this.adres = adres;
@@ -37,6 +40,19 @@ public class Reiziger {
 
 
     }
+    public Reiziger(int reiziger_id, String voorletters, String tussenvoegsel, String achternaam, Date geboorteDatum,Adres adres,List<OvChipKaart> ovChipKaartList){
+        this.reiziger_id=reiziger_id;
+        this.voorletters=voorletters;
+        this.tussenvoegsel=tussenvoegsel;
+        this.achternaam=achternaam;
+        this.geboorteDatum=geboorteDatum;
+        this.adres=adres;
+        this.ovChipKaartList=ovChipKaartList;
+
+
+
+    }
+
 
 
     public Reiziger(int reiziger_id, String voorletters, String achternaam, Date geboorteDatum){
@@ -45,12 +61,21 @@ public class Reiziger {
         this.achternaam=achternaam;
         this.geboorteDatum=geboorteDatum;
     }
+
     public Reiziger(int reiziger_id, String voorletters, String achternaam, Date geboorteDatum,Adres adres){
         this.reiziger_id=reiziger_id;
         this.voorletters=voorletters;
         this.achternaam=achternaam;
         this.geboorteDatum=geboorteDatum;
         this.adres=adres;
+    }
+    public Reiziger(int reiziger_id, String voorletters, String achternaam, Date geboorteDatum,Adres adres,List<OvChipKaart> ovChipKaartList){
+        this.reiziger_id=reiziger_id;
+        this.voorletters=voorletters;
+        this.achternaam=achternaam;
+        this.geboorteDatum=geboorteDatum;
+        this.adres=adres;
+        this.ovChipKaartList=ovChipKaartList;
     }
 
 
@@ -88,6 +113,30 @@ public class Reiziger {
            beschikbaarTussenvoegsel=tussenvoegsel;
         }
         return voorletters+" "+beschikbaarTussenvoegsel+" "+achternaam;
+    }
+
+    public List<OvChipKaart> getOvChipKaartList() {
+        return ovChipKaartList;
+    }
+
+    public void setVoorletters(String voorletters) {
+        this.voorletters = voorletters;
+    }
+
+    public void setTussenvoegsel(String tussenvoegsel) {
+        this.tussenvoegsel = tussenvoegsel;
+    }
+
+    public void setAchternaam(String achternaam) {
+        this.achternaam = achternaam;
+    }
+
+    public void setGeboorteDatum(Date geboorteDatum) {
+        this.geboorteDatum = geboorteDatum;
+    }
+
+    public void setOvChipKaartList(List<OvChipKaart> ovChipKaartList) {
+        this.ovChipKaartList = ovChipKaartList;
     }
 
     @Override

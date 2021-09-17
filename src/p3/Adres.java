@@ -9,17 +9,22 @@ private String postcode;
 private String woonplaats;
 private String huisnummer;
 private int reiziger_id;
+private Reiziger reiziger;
 
 public Adres(){}
-public Adres(int id,String woonplaats,String huisnummer,String postcode,String straat){
+public Adres(int id,String woonplaats,String huisnummer,String postcode,String straat,int reiziger_id){
     this.id=id;
     this.woonplaats=woonplaats;
     this.huisnummer=huisnummer;
     this.postcode=postcode;
     this.straat=straat;
+    this.reiziger_id=reiziger_id;
 
 }
 
+    public void setReiziger(Reiziger reiziger) {
+        this.reiziger = reiziger;
+    }
 
     public int getReiziger_id() {
         return reiziger_id;

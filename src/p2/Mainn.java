@@ -87,7 +87,7 @@ public class Mainn {
         String gbdatum = "1981-03-14";
         Reiziger sietske = new Reiziger(2, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
         System.out.println("adres van sietske= "+adao.findByReiziger(sietske));
-        Adres a1=new Adres(6,"nijmegen", "22", "7890nl", "nostraat");
+        Adres a1=new Adres(6,"nijmegen", "22", "7890nl", "nostraat",2);
         a1.setReiziger_id(77);
         adao.save(a1);
 
