@@ -111,8 +111,8 @@ public class OvChipKaartDAOPsql implements OvChipDAO{
     @Override
     public List<OvChipKaart> findByReiziger(Reiziger reiziger) throws SQLException {
         List<OvChipKaart> ovChipKaartList=new ArrayList<>();
-        PreparedStatement stmt1=myConn.prepareStatement("select * from ov_chipkaart \" +\n" +
-                "                \"WHERE reiziger_id=?");
+        PreparedStatement stmt1=myConn.prepareStatement("select * from ov_chipkaart " +
+                "                WHERE reiziger_id=?");
         stmt1.setInt(1,reiziger.getReiziger_id());
 
         ResultSet myRs=stmt1.executeQuery();
@@ -121,6 +121,24 @@ public class OvChipKaartDAOPsql implements OvChipDAO{
             ovChipKaartList.add(new OvChipKaart(myRs.getInt("kaartnummer"),myRs.getDate("geldig_tot"),myRs.getInt("klasse"),myRs.getDouble("saldo"),reiziger));
 
 
+        }
+
+        PreparedStatement stmt2=myConn.prepareStatement("select * from ov_chipkaart_product " +
+                " WHERE kaart_nummer=?");
+
+
+        for (OvChipKaart ovChipKaart:ovChipKaartList) {
+            stmt2.setInt(1,ovChipKaart.getKaartNummer());
+
+            ResultSet myRs2=stmt1.executeQuery();
+            List<Integer> products=new ArrayList<>();
+            while (myRs2.next()){
+                products.add(myRs2.getInt("product_nummer"));
+
+
+
+            }
+            ovChipKaart.setProducts(products);
         }
 
 

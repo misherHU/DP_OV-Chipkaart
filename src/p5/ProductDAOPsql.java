@@ -61,12 +61,49 @@ public class ProductDAOPsql implements ProductDAO{
 
     @Override
     public boolean update(Product product) throws SQLException {
-        PreparedStatement stmt1=myConn.prepareStatement("UPDATE product SET naam=?,beschrijving=?,prijs=? ");
+        PreparedStatement stmt1=myConn.prepareStatement("UPDATE product SET naam=?,beschrijving=?,prijs=? WHERE product_nummer=?");
         stmt1.setString(1,product.getNaam());
         stmt1.setString(2,product.getBeschrijving());
         stmt1.setDouble(3,product.getPrijs());
-        return stmt1.execute();
+        stmt1.setInt(4,product.getProduct_nummer());
+        stmt1.executeUpdate();
 
+        PreparedStatement stmt2 = myConn.prepareStatement("DELETE FROM ov_chipkaart_product WHERE product_nummer = ?");
+        stmt2.setInt(1, product.getProduct_nummer());
+        stmt2.executeUpdate();
+
+
+        //Ovchipkaarts met een bepaalde kaart nummer halen van de database want in de getOvChipkaarts() methode van product krijg ik alleen de kaart nummers.
+        PreparedStatement stmt3=myConn.prepareStatement("SELECT * FROM ov_chipkaarts WHERE kaart_nummer=?");
+        List<OvChipKaart> ovChipKaartList=new ArrayList<>();
+        for (Integer ovChipkaartNummer : product.getOvChipKaarts()) {
+
+            ResultSet ovChipkaartDB=stmt3.executeQuery();
+            stmt3.setInt(1,ovChipkaartNummer);
+
+            while (ovChipkaartDB.next()){
+                ovChipKaartList.add(new OvChipKaart(ovChipkaartDB.getInt("kaart_nummer"),ovChipkaartDB.getDate("geldig_tot"),ovChipkaartDB.getInt("klasse"),ovChipkaartDB.getDouble("saldo")));
+
+            }
+
+        }
+
+        PreparedStatement stmt4 = myConn.prepareStatement("INSERT INTO ov_chipkaart_product VALUES (?, ?, ?, ?)");
+        for (OvChipKaart ovChipkaart:ovChipKaartList) {
+            stmt4.setInt(1, ovChipkaart.getKaartNummer());
+            stmt4.setInt(2, product.getProduct_nummer());
+            stmt4.setString(3, "actief");
+            stmt4.setDate(4, Date.valueOf(LocalDate.now()));
+            stmt4.execute();
+
+        }
+
+
+
+
+
+
+            return true;
 
 
     }
@@ -133,8 +170,8 @@ public class ProductDAOPsql implements ProductDAO{
         }
 
         for (Product product: productList){
-            PreparedStatement stmt2= myConn.prepareStatement("SELECT ock.kaart_nummer \n" +
-                                                                 "FROM ov_chipkaart ock\n" +
+            PreparedStatement stmt2= myConn.prepareStatement("SELECT ock.kaart_nummer " +
+                                                                 "FROM ov_chipkaart ock " +
                                             "JOIN ov_chipkaart_product ovp ON ovp.kaart_nummer=ock.kaart_nummer AND ovp.product_nummer=?");
             stmt2.setInt(1,product.getProduct_nummer());
             ResultSet ovChipResultset=stmt2.executeQuery();
